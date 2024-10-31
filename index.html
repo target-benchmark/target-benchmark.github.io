@@ -164,12 +164,48 @@ evaluation.
 <!-- End paper abstract -->
 
 
- -->
+<section>
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title">Key findings (initial)</h2>
+
+      <img src="static/images/target_results.png" alt="Main results of the TARGET benchmark for various retrievers, tasks and datasets"/><br>
+
+      <b>Retrieval</b><br>
+    We find that lexical methods based on BM25 and TF-IDF are less effective than they are for text, even with increased k. The high performance of these methods on the OTTQA dataset appears to be mainly driven by the high correspondence between Wikipedia table title and queries, as the performance drops when
+    the title is left out (Table 2). We observe a similar pattern for these methods on the text-to-SQL tasks when table names are not included, which is further confirmed with results on FeTaQA, where the table titles are not descriptive and including them does not enhance performance. These findings emphasize the potential critical role of table metadata. Embeddings of table headers and rows generally yield the best performance. LLM-generated table summaries with LlamaIndex results in lower retrieval performance and
+    efficiency than the direct table embedding pipeline, but generating descriptive table titles in place of non-descriptive ones (e.g., FeTaQA) can enhance retrieval performance. For both text-to-SQL datasets, including data rows in the embedding actually lowers retrieval performance.<br>
+    <br>
+    <b>Generation</b><br>
+    Unsurprisingly, we observe that providing database schemas for text-to-SQL is critical to generate accurate SQL queries, as the No Context baseline yields an accuracy of 0.
+    The low performance of all retrievers on the OTTQA dataset is also notable, which we hypothesize is due to the relatively short answers in OTTQA versus longer generated answers despite prompting for
+    conciseness. Overall, we find that dense embeddings yield better retrieval performance. Notably, for the fact verification task, the precision and recall with OpenAI embeddings are significantly
+    higher than when evaluating the statements without context, i.e., using only the memory of the LLM, underlining the value of grounding LLMs conversations in factual structured data. When we
+    exclude all “not enough information” responses, we find that the recall across all retrievers increases to approximately 0.747, which confirms the impact of incorporating relevant tables into the context.
+  </div>
+</section>
+
+
+<section>
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title">Contact</h2>
+      We warmly welcome contributions and suggestions for TARGET, please find instructions at: <a href="https://github.com/target-benchmark/target">https://github.com/target-benchmark/target</a>.
+      Want to share/discuss something else, please reach out to Madelon Hulsebos (<a href="mailto:madelon@cwi.nl">madelon@cwi.nl</a>)!
+  </div>
+</section>
+
+
+
 <!--BibTex citation -->
-  <section class="section" id="BibTeX">
+<section class="section" id="BibTex">
     <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>TBC</code></pre>
+      <h2 class="title">Citation</h2>
+        <pre><code>@inproceedings{ji2024target,
+  title={TARGET: Benchmarking Table Retrieval for Generative Tasks},
+  author={Ji, Xingyu and Parameswaran, Aditya and Hulsebos, Madelon},
+  booktitle={NeurIPS 2024 Third Table Representation Learning Workshop}
+}</code></pre>
     </div>
 </section>
 <!--End BibTex citation -->
