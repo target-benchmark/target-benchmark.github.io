@@ -75,7 +75,7 @@
                     <div class="publication-links">
                          <!-- Arxiv PDF link -->
                       <span class="link-block">
-                        <a href="/static/pdfs/TARGET_TRL_NeurIPS.pdf" target="_blank"
+                        <a href="/static/pdfs/TARGET_V1.pdf" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
@@ -129,7 +129,7 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <img src="static/images/target_diagram.jpg" alt="Overview diagram of the TARGET benchmark for evaluating table retrieval for generative tasks"/>
+      <img src="static/images/target_diagram.png" alt="Overview diagram of the TARGET benchmark for evaluating table retrieval for generative tasks"/>
 <!--       <video poster="" id="tree" autoplay controls muted loop height="100%"> -->
         <!-- Your video here -->
 <!--         <source src="static/videos/banner_video.mp4"
@@ -151,21 +151,14 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-         The data landscape is rich with structured data, often of high value to organizations, that drive important applications in data analysis and machine learning.
-Recent progress in representation learning and generative models for such data has led to the development of natural language interfaces to structured data, including those that leverage text-to-SQL.
-            Contextualizing interactions, including conversational and agentic elements, in structured data through retrieval-augmented
-generation can provide substantial benefits in the form of freshness, accuracy, and
-comprehensiveness of answers. The key question, however, is: how do we retrieve the right table(s) for the analytical query or task at hand? To investigate this
-question, we introduce <b>TARGET</b>: a benchmark for evaluating <b>TA</b>ble <b>R</b>etrieval for
-<b>GE</b>nerative <b>T</b>asks. We use TARGET to analyze the retrieval performance of dif
-ferent retrievers in isolation, as well as their impact on downstream generators for
-question answering, fact verification, and text-to-SQL. We find that out-of-the-box
-embedding-based retrievers far outperform a BM25 baseline which appears less
-effective than it is for retrieval over unstructured text. We also surface the sensitiv
-ity of retrievers across various metadata (e.g., missing table titles), and illustrate a
-stark variation of retrieval performance across datasets and tasks. TARGET is developed for easy reuse and extension to advance research on retrieval methods and
-pipelines for relational data through fine-grained, comprehensive, and consistent
-evaluation.
+            The data landscape is rich with structured data, often of high value to organizations, driving important applications in data analysis and machine learning.
+            Recent progress in representation learning and generative models for such data has led to the development of natural language interfaces to structured data,
+            including those leveraging text-to-SQL. Contextualizing interactions, either through conversational interfaces or agentic components, in structured data through
+            retrieval-augmented generation can provide substantial benefits in the form of freshness, accuracy, and comprehensiveness of answers.
+            The key question is: how do we retrieve the right table(s) for the analytical query or task at hand? To this end, we introduce TARGET: a benchmark for evaluating <b>TA</b>ble <b>R</b>etrieval for <b>GE</b>nerative <b>T</b>asks.
+            With TARGET we analyze the retrieval performance of different retrievers in isolation, as well as their impact on downstream tasks.
+            We find that dense embedding-based retrievers far outperform a BM25 baseline which is less effective than it is for retrieval over unstructured text.
+            We also surface the sensitivity of retrievers across various metadata (e.g., missing table titles), and demonstrate a stark variation of retrieval performance across datasets and tasks.
           </p>
         </div>
       </div>
@@ -174,25 +167,61 @@ evaluation.
 </section>
 <!-- End paper abstract -->
 
+<section>
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title">The TARGET Benchmark</h2>
+
+      <b>What is TARGET?</b>
+      <br>
+      TARGET is the first benchmark for evaluating open-domain querying over tabular data as illustrated in the below figure. TARGET enables consistent and comprehensive evaluation of models and pipelines for table retrieval in isolation, as well as end-to-end for downstream tasks (question answering, fact verification, and text-to-SQL).
+      In our paper, we use TARGET to analyze retrieval methods based on sparse lexical representations, dense embeddings of metadata, dense table embeddings, and dense row embedding.<br>
+      
+      <br>
+      The curated datasets and the TARGET package (see above links) are designed for easy reuse for custom systems for RAG with tabular data.
+      <br>
+      <br>
+
+      <img src="static/images/retrieval-pipeline.png" alt="Pipeline of open domain question answering over tabular data, in which no tables for the question are provided but are needed to be retrieved first."/><br>
+
+      <br>
+      <br>
+      <b>Why TARGET?</b>
+      <li> Existing systems and benchmarks for retrieval-augmented generation (RAG) pipelines mainly focus on retrieval of text, images, and audio data. The value of tabular data for RAG is overlooked, while tables typically contain fresh, reliable and domain-specific data. As we show in our paper, grounding LLM dialogues in tabular data significantly improve accuracy.</li>
+      <li> We connect LLM-powered analytical querying over structured data (e.g. through table lookups or SQL generation) with a retriever, extending ``closed domain'' querying systems (e.g. through table reasoning or SQL generation) to the ``open domain'' setting.</li>
+    </div>
+  </div>
+</section>
+
 
 <section>
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <h2 class="title">Key findings (initial)</h2>
+      <h2 class="title">Key findings</h2>
 
-      <img src="static/images/target_results.png" alt="Main results of the TARGET benchmark for various retrievers, tasks and datasets"/><br>
+    <b>Retrieval</b><br>
+    
+    We find that table retrieval based on sparse lexical representations such as BM25 (OTTQA) are less effective, across tasks and datasets, than they are for text.
+    The importance of descriptive metadata for retrievers based on lexical representations is clear from their low performances on FeTaQA and TabFact, which do not contain descriptive metadata.
+    LLM-generated table summaries with dense metadata embeddings can significantly improve retrieval performance as illustrated by the Dense Metadata Embedding baseline.
+    Generally, Dense Table Embeddings (table header + rows) generally yield the best performance. Notably, for both text-to-SQL datasets, the effect of including data rows is minimal, with differences within ±5% in recall.
+    The Dense Row-level Embedding method exhibits comparable performances to dense embeddings of tables with sampled rows, but becomes impractical for large tables, such as in BIRD. Further analysis regarding scaling, context limits, and effect of retrieval, can be found in the paper.
 
-      <b>Retrieval</b><br>
-    We find that lexical methods based on BM25 and TF-IDF are less effective than they are for text, even with increased k. The high performance of these methods on the OTTQA dataset appears to be mainly driven by the high correspondence between Wikipedia table title and queries, as the performance drops when
-    the title is left out (Table 2). We observe a similar pattern for these methods on the text-to-SQL tasks when table names are not included, which is further confirmed with results on FeTaQA, where the table titles are not descriptive and including them does not enhance performance. These findings emphasize the potential critical role of table metadata. Embeddings of table headers and rows generally yield the best performance. LLM-generated table summaries with LlamaIndex results in lower retrieval performance and
-    efficiency than the direct table embedding pipeline, but generating descriptive table titles in place of non-descriptive ones (e.g., FeTaQA) can enhance retrieval performance. For both text-to-SQL datasets, including data rows in the embedding actually lowers retrieval performance.<br>
+    <br>
+    <br>
+    <img src="static/images/retrieval_results_target.png" alt="Retrieval results of the TARGET benchmark for various retrievers, tasks and datasets"/><br>
+
     <br>
     <b>Generation</b><br>
-    Unsurprisingly, we observe that providing database schemas for text-to-SQL is critical to generate accurate SQL queries, as the No Context baseline yields an accuracy of 0.
-    The low performance of all retrievers on the OTTQA dataset is also notable, which we hypothesize is due to the relatively short answers in OTTQA versus longer generated answers despite prompting for
-    conciseness. Overall, we find that dense embeddings yield better retrieval performance. Notably, for the fact verification task, the precision and recall with OpenAI embeddings are significantly
-    higher than when evaluating the statements without context, i.e., using only the memory of the LLM, underlining the value of grounding LLMs conversations in factual structured data. When we
-    exclude all “not enough information” responses, we find that the recall across all retrievers increases to approximately 0.747, which confirms the impact of incorporating relevant tables into the context.
+
+    In general, the ``No Context'' baseline performs significantly lower without having relevant tables provided, illustrating the value of table retrieval (e.g. from Wikipedia) for grounding LLMs.
+    The low performance of all retrievers on the OTTQA dataset is notable, which we hypothesize is due to the relatively short answers in OTTQA versus longer generated answers despite prompting for concisenes, and illustrates the need for more robust evaluation metrics.
+    Naturally, due to the stronger retriever performance of dense embeddings, we find that dense retrievers generally yield best downstream performance across datasets. Meanwhile, the poor retrieval performance of sparse lexical representations on FeTaQA seems to distract the generator with irrelevant tables.
+    To understand the limitations of LLM context for table comprehension tasks, we explore the relationship between the rank of the ground-truth table in the retrieval results and downstream task performance and find that the accuracy significantly decreases when the correct table is lower positioned in context (more details are in the paper).
+    <br>
+    <br>
+    <img src="static/images/generation_results_target.png" alt="Generation results of the TARGET benchmark for various retrievers, tasks and datasets"/>
+ 
   </div>
 </section>
 
