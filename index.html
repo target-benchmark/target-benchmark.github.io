@@ -176,10 +176,6 @@
       TARGET is the first benchmark for evaluating open-domain querying over tabular data as illustrated in the below figure. TARGET enables consistent and comprehensive evaluation of models and pipelines for table retrieval in isolation, as well as end-to-end for downstream tasks (question answering, fact verification, and text-to-SQL).
       In our paper, we use TARGET to analyze retrieval methods based on sparse lexical representations, dense embeddings of metadata, dense table embeddings, and dense row embedding.<br>
       
-      <br>
-      The curated datasets and the TARGET python package (see above links) are designed for easy reuse for custom systems for RAG with tabular data.
-      <br>
-      <br>
 
       <img src="static/images/retrieval-pipeline.png" alt="Pipeline of open domain question answering over tabular data, in which no tables for the question are provided but are needed to be retrieved first."/><br>
 
@@ -188,7 +184,11 @@
       <b>Why TARGET?</b>
       <li> Existing systems and benchmarks for retrieval-augmented generation (RAG) pipelines mainly focus on retrieval of text, images, and audio data. The value of tabular data for RAG is overlooked, while tables typically contain fresh, reliable and domain-specific data. As we show in our paper, grounding LLM dialogues in tabular data significantly improve accuracy.</li>
       <li> We connect LLM-powered analytical querying over structured data (e.g. through table lookups or SQL generation) with a retriever, extending ``closed domain'' querying systems (e.g. through table reasoning or SQL generation) to the ``open domain'' setting.</li>
-  </div>
+  
+      <br>
+      The curated datasets and the TARGET python package (see above links) are designed for easy reuse for custom systems for RAG with tabular data.
+
+    </div>
 </section>
 
 
